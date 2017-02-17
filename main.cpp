@@ -3,7 +3,7 @@
  **** Created By : kyaz758
  *** Description :
  * Creation Date : 2017-02-11 11:57
- * Last Modified : 2017-02-14 13:40
+ * Last Modified : 2017-02-17 12:10
  ******************************************************************************/
 
 #include <stdio.h>
@@ -14,7 +14,8 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string>
-#include "../A_Simple_Web_Server/HttpResponse.hpp"
+#include "HttpResponse.hpp"
+#include "HttpRequest.hpp"
 using namespace std;
 
 #define IP "127.0.0.1"
@@ -72,10 +73,10 @@ int main()
     {
         clientFd = accept(listenFd, NULL, 0);
         printf("A new connect is establishing.\n");
-        /*
         uint8_t buf[1024];
         again:
-        int ret = recv(clientFd, buf, 1024);
+        int ret = recv(clientFd, buf, 1024, 0);
+        //返回0代表数据接收完毕
         if (ret == -1) // 是否意味着真的发生了错误？可能是被意外的信号打断
         {
             if (errno == EINTR)
@@ -86,17 +87,26 @@ int main()
             close(clientFd);
             continue;
         }
-        */
+        //以用户模式实现
+        HttpRequest p(clientFd);
+        while (p.isHasNextLine())
+        {
+            p.getNextLine();
+        }
         //recv(clientFd, buf, bufLen);
         // 请求
         // 读取数据，判断数据（的完整性）
-        // GET /HTTP/1.1^M
+        // 解析HTTP请求
+        //
+        // 方式 路径 协议
+        // GET / HTTP/1.1^M
         // Host: loaclhost:8080^M
         // Connection: keep-alive^M
         // Cache-Control: max-age=0^M
-        // Upgrade-Insecure-Requests: 1 ^M
+        // Upgrade-Insecure-Requests: 1^M
         
         // http响应
+        /*
         const char *response = "HTTP/1.0 200 OK\r\n"
             "Accept-Ranges: bytes\r\n"
             "Last-Modified: Fri, 13 Jan 2017 03:13:14 GMT\r\n"
@@ -105,20 +115,25 @@ int main()
             "Date: Fri, 10 Feb 2017 03:55:49 GMT\r\n"
             "\r\n"
             "Hello";
-            /*  
+            */
         HttpResponse rep(200);
-        rep.headersadd("Accept-Ranges", "bytes");
-        rep.headersadd("Last-Modified", "Fri, 13 Jan 2017 03:13:14 GMT");
-        rep.headersadd("Content-Type", "text/c; charset=UTF-8");
-        rep.headersadd("Content-Length", "5");
-        rep.headersadd("Date", "Fri, 10 Feb 2017 03:55:49 GMT");
+        rep.headersAdd("Accept-Ranges", "bytes");
+        rep.headersAdd("Last-Modified", "Fri, 13 Jan 2017 03:13:14 GMT");
+        rep.headersAdd("Content-Type", "text/c; charset=UTF-8");
+        rep.headersAdd("Content-Length", "5");
+        rep.headersAdd("Date", "Fri, 10 Feb 2017 03:55:49 GMT");
         rep.writeBody("hello");
         string package = rep.getPackage();
         send(clientFd, package.data(), package.length(), 0);
-            */
-        send(clientFd, response, strlen(response), 0);
+        //send(clientFd, response, strlen(response), 0);
         close(clientFd);
         clientFd = -1;
     }
     return 0;
 }
+//.configure
+//make
+//sudo make install
+//1.适度包装
+//2.个性
+//3.男同学头像意义不大

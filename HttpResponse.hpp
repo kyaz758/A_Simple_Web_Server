@@ -9,6 +9,8 @@
 #ifndef HTTPRESPONSE_H
 #define HTTPRESPONSE_H
 #define LFCR "/r/n" //FIXME TODO XXX
+//纯C++头文件：HPP
+//和CPP无任何区别，业界约定俗成，区分.h文件
 
 #include <iostream>
 #include <unordered_map>
@@ -33,22 +35,24 @@ private:
     //static const char * const LFCR = "/r/n";
 public:
     HttpResponse(HTTPState state):_state(state) {}
-    void headersadd(const std::string key, const std::string value)
+    HttpResponse& headersAdd(const std::string key, const std::string value)
     {
-        _headers.insert(key, value);
+        //_headers.insert({key, value});
+        _headers[key] = value;
+        return *this;
     }
     void writeBody(const std::string &body) 
     {
-        _body.clear();
+        _body.clear(); //重复调用问题？设计。。。
         //迭代器适配器
         //std::copy(body.begin(), body.end(), _body.begin());
         std::copy(body.begin(), body.end(), std::back_inserter(_body));
-    }
+    }   
     std::string getPackage() const
     {
         std::string package;
         package.append("HTTP/1.0 ");
-        package.append(_stateTable[_state]);
+        package.append(_stateTable[_state]); //表驱动，数据驱动
         package.append(LFCR);
         for (auto e : _headers)
         {
