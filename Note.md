@@ -15,18 +15,21 @@
     inet_pton(AF_INET, IP, &(socketAddr.sin_addr.s_addr));
     socketAddr.sin_port = htons(PORT);</code></pre>
 
-- bind(
-- listen(
+- bind(  
+
+- listen(  
+
     > listen操作的意义：转换socket的状态，因为accept无法接收主动状态的socket
     > 其第二个参数(second argument) backlog的意义:
     > - 已经完成链接，但还未被accept接收的socket，存放于队列中，参数指定此队列大小
     > - 一般超出其大小会导致操作失败，但有些实现具有重连机制，会延迟报错，等待成功
-- accept(
+- accept(  
+
     > 首先，无法接收主动状态的socket，需要listen先进行转换
     > 其次，socket状态的设置意义：主动状态的socekt无需存放队列或其他系统资源来建立链接
     > accept进行的时间：在三次握手第二次时就已经建立了链接，已经可以携带将要传输的数据了
 
-# Last_lesson
+### Last_lesson
 
 > 证明 形式化的符号工具
 >
