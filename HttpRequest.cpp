@@ -3,10 +3,10 @@
  **** Created By : kyaz758
  *** Description :
  * Creation Date : 2017-02-17 11:22
- * Last Modified : 2017-02-17 12:07
+ * Last Modified : 2017-02-17 13:24
  ******************************************************************************/
 
-#include <../archer/Git/A_Simple_Web_Server/HttpRequest.hpp>
+#include "HttpRequest.hpp"
 #include <sys/socket.h>
 #include <sys/types.h>
 

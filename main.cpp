@@ -3,7 +3,7 @@
  **** Created By : kyaz758
  *** Description :
  * Creation Date : 2017-02-11 11:57
- * Last Modified : 2017-02-17 12:10
+ * Last Modified : 2017-02-18 17:27
  ******************************************************************************/
 
 #include <stdio.h>
@@ -73,6 +73,7 @@ int main()
     {
         clientFd = accept(listenFd, NULL, 0);
         printf("A new connect is establishing.\n");
+        /*
         uint8_t buf[1024];
         again:
         int ret = recv(clientFd, buf, 1024, 0);
@@ -87,6 +88,7 @@ int main()
             close(clientFd);
             continue;
         }
+        */
         //以用户模式实现
         HttpRequest p(clientFd);
         while (p.isHasNextLine())

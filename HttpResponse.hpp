@@ -66,7 +66,7 @@ public:
         
         return package;
     }
-    ~HttpResponse();
+//    ~HttpResponse();
 };
 
 #endif /* HTTPRESPONSE_H */

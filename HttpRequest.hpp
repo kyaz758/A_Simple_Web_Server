@@ -14,10 +14,10 @@ private:
     bool _isreadable;
 
 public:
-    HttpRequest(int clientFd);
+    HttpRequest(int clientFd):_clientFd(clientFd) {}
     bool isHasNextLine();
     std::string getNextLine();
-    ~HttpRequest();
+//    ~HttpRequest();
 };
 
 #endif /* HTTPREQUEST_H */
